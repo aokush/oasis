@@ -5,8 +5,6 @@
  */
 package org.kush.oasis.segmented;
 
-import org.kush.oasis.OasisMap;
-import org.kush.oasis.util.Utilities;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,12 +22,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.kush.oasis.OasisMap;
+import org.kush.oasis.util.Utilities;
 import org.nustaq.serialization.FSTObjectInput;
 import org.nustaq.serialization.FSTObjectOutput;
 
@@ -110,7 +110,6 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     static {
         DateFormat fmt = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.FULL);
         STORE = new File(BASE_STORE_NAME + PERSISTED_SEGMENT_STORE_PREFIX + Utilities.replaceSpecialChars(fmt.format(new Date())));
-        STORE.mkdirs();
         STORE.getParentFile().deleteOnExit();
         STORE.deleteOnExit();
     }
@@ -787,7 +786,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
      */
     @Override
     public void destroy() {
@@ -934,7 +933,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -954,7 +953,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -977,7 +976,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1098,7 +1097,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1110,7 +1109,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1122,7 +1121,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance

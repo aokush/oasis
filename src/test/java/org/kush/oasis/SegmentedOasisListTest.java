@@ -9,8 +9,12 @@ import org.kush.oasis.segmented.SegmentedOasisList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,6 +31,16 @@ import static org.junit.Assert.*;
 public class SegmentedOasisListTest {
 
     public SegmentedOasisListTest() {
+    }
+
+    @Test
+    public void testCustomStore() throws IOException {
+        Path path = Files.createTempDirectory("dir");
+        
+        SegmentedOasisList<Integer> instance = new SegmentedOasisList<>(path.toAbsolutePath().toFile());
+        instance.add(1);
+
+        assertTrue(instance.instanceStore().startsWith(path.toAbsolutePath().toFile().getAbsolutePath()));
     }
 
     /**
