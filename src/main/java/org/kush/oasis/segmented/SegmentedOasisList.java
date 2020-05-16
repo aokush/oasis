@@ -114,7 +114,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     static {
         DateFormat fmt = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.FULL);
         STORE = new File(BASE_STORE_NAME + PERSISTED_SEGMENT_STORE_PREFIX + Utilities.replaceSpecialChars(fmt.format(new Date())));
-        STORE.mkdirs();
+        STORE.getParentFile().deleteOnExit();
         STORE.deleteOnExit();
     }
 
@@ -135,9 +135,9 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 
     /**
      * Creates an instance with
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY 200000}
+     * {@link org.kush.oasis.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY 200000}
      * items in memory and
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000}
+     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000}
      * segment size
      */
     public SegmentedOasisList() {
@@ -146,7 +146,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 
     /**
      * Creates an instance with a custom number for items in memory and
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000}
+     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000}
      * segment size
      *
      * @param itemsStoredInMemory
@@ -1057,7 +1057,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1073,7 +1073,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1095,7 +1095,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1107,7 +1107,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
      */
     @Override
     public void destroy() {
@@ -1242,7 +1242,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1254,7 +1254,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1270,7 +1270,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link com.inmotion.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
