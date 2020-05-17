@@ -1885,6 +1885,72 @@ public class SegmentedOasisListTest {
      * Test of compact, of class SegmentedOasisList.
      */
     @Test
+    public void testCompactFast_One_Sgement_Removed() throws Exception {
+
+        SegmentedOasisList<Integer> instance = new SegmentedOasisList<>(3, 2);
+
+        // 2 persisted segment counts
+        Collection c = Arrays.asList(1, 1, 2, 3, 4, 5, 6, 7);
+        instance.addAll(c);
+
+        // remove 2 items form memory before compacting fast
+        instance.remove(1);
+        instance.remove(1);
+
+        instance.compactFast();
+
+        assertEquals(1, instance.persistedSegmentCount());
+
+    }
+
+    /**
+     * Test of compact, of class SegmentedOasisList.
+     */
+    @Test
+    public void testCompactFast_Muliple_Sgements_Removed() throws Exception {
+
+        SegmentedOasisList<Integer> instance = new SegmentedOasisList<>(3, 1);
+
+        // 2 persisted segment counts
+        Collection c = Arrays.asList(1, 1, 2, 3, 4, 5);
+        instance.addAll(c);
+
+        // remove 2 items form memory before compacting fast
+        instance.remove(0);
+        instance.remove(0);
+
+        instance.compactFast();
+
+        assertEquals(0, instance.persistedSegmentCount());
+
+    }
+
+
+    /**
+     * Test of compact, of class SegmentedOasisList.
+     */
+    @Test
+    public void testCompactFast_Sgement_Not_Removed() throws Exception {
+
+        SegmentedOasisList<Integer> instance = new SegmentedOasisList<>(3, 2);
+
+        // 2 persisted segment counts
+        Collection c = Arrays.asList(1, 1, 2, 3, 4, 5, 6, 7);
+        instance.addAll(c);
+
+        // remove 2 items form memory before compacting fast
+        instance.remove(1);
+
+        instance.compactFast();
+
+        assertEquals(2, instance.persistedSegmentCount());
+
+    }
+
+    /**
+     * Test of compact, of class SegmentedOasisList.
+     */
+    @Test
     public void testCompact_Last_Segment_Caching_Enabled() throws Exception {
 
         File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Caching_Enabled");
