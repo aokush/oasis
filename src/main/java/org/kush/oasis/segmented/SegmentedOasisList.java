@@ -40,7 +40,7 @@ import org.nustaq.serialization.FSTObjectOutput;
  * The disk overflow is divided into segments. The number of items in each
  * segment is configurable using a constructor argument; otherwise, a default
  * value is used. The default location for the disk overflow store is the
- * {java.io.tmdir}.huge-collection
+ * {java.io.tmdir}.oasis-collection
  *
  * An instance of this class is not thread-safe
  *
@@ -316,7 +316,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     @Override
     public Iterator<E> iterator() {
         checkIfDestroyed();
-        return new HugeListIterator(this);
+        return new OasisSegmentedListIterator(this);
     }
 
     /**
@@ -955,7 +955,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     @Override
     public ListIterator<E> listIterator() {
         checkIfDestroyed();
-        return new HugeListIterator(this);
+        return new OasisSegmentedListIterator(this);
     }
 
     /**
@@ -971,7 +971,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
             throw new IndexOutOfBoundsException("Index out of range");
         }
 
-        return new HugeListIterator(this, index);
+        return new OasisSegmentedListIterator(this, index);
     }
 
     /**
@@ -1510,7 +1510,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 //        persistedMapTracker.removeAll(filesToRemove);
     }
 
-    static class HugeListIterator<E extends Serializable> implements ListIterator<E> {
+    static class OasisSegmentedListIterator<E extends Serializable> implements ListIterator<E> {
 
         public enum LastCall {
             NEXT, PREVIOUS, REMOVE, SET, ADD
@@ -1520,11 +1520,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
         private int currentIndex;
         private LastCall lastCall;
 
-        public HugeListIterator(OasisList<E> backingList) {
+        public OasisSegmentedListIterator(OasisList<E> backingList) {
             this.backingList = backingList;
         }
 
-        public HugeListIterator(OasisList<E> backingList, int startIndex) {
+        public OasisSegmentedListIterator(OasisList<E> backingList, int startIndex) {
 
             if (startIndex < 0 || startIndex >= backingList.size()) {
                 throw new IndexOutOfBoundsException("Index out of range");

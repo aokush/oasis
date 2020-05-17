@@ -1532,7 +1532,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testEquals() throws Exception {
 
-        File file = File.createTempFile("huge-collection-test-persistence", "");
+        File file = File.createTempFile("oasis-collection-test-persistence", "");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1560,7 +1560,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testEquals_Overflow() throws Exception {
 
-        File file = File.createTempFile("huge-collection-test-persistence", "");
+        File file = File.createTempFile("oasis-collection-test-persistence", "");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1618,7 +1618,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testConstructor_Custom_Store_File() {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-list-testConstructor_Custom_Store_File");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-list-testConstructor_Custom_Store_File");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1637,7 +1637,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testConstructor_Custom_Store_File_Overflow() {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-list-testConstructor_Custom_Store_File_Overflow");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-list-testConstructor_Custom_Store_File_Overflow");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1656,7 +1656,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testConstructor_Custom_Store_String() {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testConstructor_Custom_Store_String");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testConstructor_Custom_Store_String");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1676,7 +1676,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testConstructor_Custom_Store_String_Overflow() {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-test-2");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-test-2");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1696,7 +1696,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testPersistence_size() throws Exception {
 
-        File file = File.createTempFile("huge-collection-test-persistence", "");
+        File file = File.createTempFile("oasis-collection-test-persistence", "");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1724,7 +1724,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testPersistence_size_Overflow() throws Exception {
 
-        File file = File.createTempFile("huge-collection-test-persistence", "");
+        File file = File.createTempFile("oasis-collection-test-persistence", "");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1752,7 +1752,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testPersistence_Elements_Overflow() throws Exception {
 
-        File file = File.createTempFile("huge-collection-test-persistence", "");
+        File file = File.createTempFile("oasis-collection-test-persistence", "");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1780,11 +1780,11 @@ public class SegmentedOasisListTest {
     @Test
     public void testPersistence_Custom_Store() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testPersistence_Custom_Store");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testPersistence_Custom_Store");
         file.mkdirs();
         file.deleteOnExit();
 
-        File saveToFile = File.createTempFile("huge-collection-test-persistence", "");
+        File saveToFile = File.createTempFile("oasis-collection-test-persistence", "");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1812,11 +1812,11 @@ public class SegmentedOasisListTest {
     @Test
     public void testPersistence_Custom_Store_Overflow() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testPersistence_Custom_Store_Overflow");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testPersistence_Custom_Store_Overflow");
         file.mkdirs();
         file.deleteOnExit();
 
-        File saveToFile = File.createTempFile("huge-collection-test-persistence", "");
+        File saveToFile = File.createTempFile("oasis-collection-test-persistence", "");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1844,7 +1844,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Overflow_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Overflow_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Overflow_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1867,7 +1867,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Overflow_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Overflow_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Overflow_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1953,7 +1953,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Last_Segment_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1975,7 +1975,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Last_Segment_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1995,7 +1995,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Last_Segment_Emptied_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2020,7 +2020,7 @@ public class SegmentedOasisListTest {
     //  @Ignore
     public void testCompact_Last_Segment_Emptied_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2042,7 +2042,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2065,7 +2065,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2085,7 +2085,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Emptied_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2109,7 +2109,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Emptied_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "huge-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2128,7 +2128,7 @@ public class SegmentedOasisListTest {
 
     //====================== Iterator Test =========================
     /**
-     * Test of hasNext method, of class HugeListIterator.
+     * Test of hasNext method, of class oasisListIterator.
      */
     @Test
     public void testHasNext_Start() {
@@ -2143,7 +2143,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of hasNext method, of class HugeListIterator.
+     * Test of hasNext method, of class oasisListIterator.
      */
     @Test
     public void testHasNext_End() {
@@ -2161,7 +2161,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of hasNext method, of class HugeListIterator.
+     * Test of hasNext method, of class oasisListIterator.
      */
     @Test
     public void testHasNext_middle() {
@@ -2178,7 +2178,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of next method, of class HugeListIterator.
+     * Test of next method, of class oasisListIterator.
      */
     @Test
     public void testNext_Start() {
@@ -2192,7 +2192,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of next method, of class HugeListIterator.
+     * Test of next method, of class oasisListIterator.
      */
     @Test(expected = NoSuchElementException.class)
     public void testNext_End() {
@@ -2206,7 +2206,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of next method, of class HugeListIterator.
+     * Test of next method, of class oasisListIterator.
      */
     @Test
     public void testNext_Middle() {
@@ -2223,7 +2223,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of hasPrevious method, of class HugeListIterator.
+     * Test of hasPrevious method, of class oasisListIterator.
      */
     @Test
     public void testHasPrevious_Start() {
@@ -2238,7 +2238,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of hasPrevious method, of class HugeListIterator.
+     * Test of hasPrevious method, of class oasisListIterator.
      */
     @Test
     public void testHasPrevious_End() {
@@ -2257,7 +2257,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of hasPrevious method, of class HugeListIterator.
+     * Test of hasPrevious method, of class oasisListIterator.
      */
     @Test
     public void testHasPrevious_Middle() {
@@ -2276,7 +2276,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of previous method, of class HugeListIterator.
+     * Test of previous method, of class oasisListIterator.
      */
     @Test(expected = NoSuchElementException.class)
     public void testPrevious_Start() {
@@ -2288,7 +2288,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of previous method, of class HugeListIterator.
+     * Test of previous method, of class oasisListIterator.
      */
     @Test
     public void testPrevious_End() {
@@ -2305,7 +2305,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of previous method, of class HugeListIterator.
+     * Test of previous method, of class oasisListIterator.
      */
     @Test
     public void testPrevious_Middle() {
@@ -2323,7 +2323,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of nextIndex method, of class HugeListIterator.
+     * Test of nextIndex method, of class oasisListIterator.
      */
     @Test
     public void testNextIndex_Start() {
@@ -2338,7 +2338,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of nextIndex method, of class HugeListIterator.
+     * Test of nextIndex method, of class oasisListIterator.
      */
     @Test
     public void testNextIndex_End() {
@@ -2356,7 +2356,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of nextIndex method, of class HugeListIterator.
+     * Test of nextIndex method, of class oasisListIterator.
      */
     @Test
     public void testNextIndex_Middle() {
@@ -2374,7 +2374,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of previousIndex method, of class HugeListIterator.
+     * Test of previousIndex method, of class oasisListIterator.
      */
     @Test
     public void testPreviousIndex_Start() {
@@ -2389,7 +2389,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of previousIndex method, of class HugeListIterator.
+     * Test of previousIndex method, of class oasisListIterator.
      */
     @Test
     public void testPreviousIndex_End() {
@@ -2408,7 +2408,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of previousIndex method, of class HugeListIterator.
+     * Test of previousIndex method, of class oasisListIterator.
      */
     @Test
     public void testPreviousIndex_Middle() {
@@ -2427,7 +2427,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of remove method, of class HugeListIterator.
+     * Test of remove method, of class oasisListIterator.
      */
     @Test
     public void testRemove_After_Next() {
@@ -2444,7 +2444,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of remove method, of class HugeListIterator.
+     * Test of remove method, of class oasisListIterator.
      */
     @Test
     public void testRemove_After_Previous() {
@@ -2462,7 +2462,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of remove method, of class HugeListIterator.
+     * Test of remove method, of class oasisListIterator.
      */
     @Test(expected = IllegalStateException.class)
     public void testRemove_After_Add() {
@@ -2478,7 +2478,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of remove method, of class HugeListIterator.
+     * Test of remove method, of class oasisListIterator.
      */
     @Test(expected = IllegalStateException.class)
     public void testRemove_After_Set() {
@@ -2494,7 +2494,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of remove method, of class HugeListIterator.
+     * Test of remove method, of class oasisListIterator.
      */
     @Test(expected = IllegalStateException.class)
     public void testRemove_After_Remove() {
@@ -2510,7 +2510,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of set method, of class HugeListIterator.
+     * Test of set method, of class oasisListIterator.
      */
     @Test
     public void testSet_After_Next() {
@@ -2528,7 +2528,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of set method, of class HugeListIterator.
+     * Test of set method, of class oasisListIterator.
      */
     @Test
     public void testSet_After_Previous() {
@@ -2547,7 +2547,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of set method, of class HugeListIterator.
+     * Test of set method, of class oasisListIterator.
      */
     @Test(expected = IllegalStateException.class)
     public void testSet_After_Add() {
@@ -2564,7 +2564,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of set method, of class HugeListIterator.
+     * Test of set method, of class oasisListIterator.
      */
     @Test(expected = IllegalStateException.class)
     public void testSet_After_Set() {
@@ -2581,7 +2581,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of set method, of class HugeListIterator.
+     * Test of set method, of class oasisListIterator.
      */
     @Test(expected = IllegalStateException.class)
     public void testSet_After_Remove() {
@@ -2598,7 +2598,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testAdd_Size() {
@@ -2616,7 +2616,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testAdd_After_Next() {
@@ -2634,7 +2634,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testAdd_After_Previous() {
@@ -2653,7 +2653,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testAdd_After_Add() {
@@ -2672,7 +2672,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testAdd_After_Set() {
@@ -2691,7 +2691,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testAdd_After_Remove() {
@@ -2710,7 +2710,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testIterator_Forward() {
@@ -2727,7 +2727,7 @@ public class SegmentedOasisListTest {
     }
 
     /**
-     * Test of add method, of class HugeListIterator.
+     * Test of add method, of class oasisListIterator.
      */
     @Test
     public void testIterator_Backward() {
