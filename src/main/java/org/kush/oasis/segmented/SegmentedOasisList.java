@@ -395,7 +395,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
         boolean isAdded = false;
 
         int originalSize = memoryStore.size();
-        if (originalSize < this.itemsStoredInMemory) {
+        if (originalSize < this.itemsStoredInMemory && originalSize == size) {
             isAdded = memoryStore.add(e);
         } else {
             if (newSegment == null) {
