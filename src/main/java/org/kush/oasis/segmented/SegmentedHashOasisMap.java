@@ -37,19 +37,19 @@ import org.nustaq.serialization.FSTObjectOutput;
  * @param <K> The key type for this Map
  * @param <V> The value type for this Map
  */
-public class SegmentedHashOasisMap<K extends Serializable, V extends Serializable> implements Serializable, OasisMap<K, V>, SegmentedOasisCollection {
+public class SegmentedHashOasisMap<K extends Serializable, V extends Serializable>
+        implements Serializable, OasisMap<K, V>, SegmentedOasisCollection {
 
     /*
      * A shared store for all instances in teh same process
      */
     private static final File STORE;
-    
+
     /*
      * Holds a Queue of directories to remove when the jvm exists
      */
     private static final ConcurrentLinkedQueue<String> directoriesToClean = new ConcurrentLinkedQueue<>();
-    
-    
+
     public static final String PERSISTED_SEGMENT_STORE_PREFIX = "segmented-maps-";
 
     /*
@@ -104,7 +104,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
     static {
         DateFormat fmt = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.FULL);
-        STORE = new File(BASE_STORE_NAME + PERSISTED_SEGMENT_STORE_PREFIX + Utilities.replaceSpecialChars(fmt.format(new Date())));
+        STORE = new File(BASE_STORE_NAME + PERSISTED_SEGMENT_STORE_PREFIX
+                + Utilities.replaceSpecialChars(fmt.format(new Date())));
         STORE.getParentFile().deleteOnExit();
         STORE.deleteOnExit();
     }
@@ -121,8 +122,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
                 }
             }
 
-        }
-        );
+        });
     }
 
     /**
@@ -142,8 +142,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * Creates an instance with a custom number of items to be store in memory
-     * and each segment
+     * Creates an instance with a custom number of items to be store in memory and
+     * each segment
      *
      * @param itemsStoredInMemory
      * @param segmentSize
@@ -156,31 +156,26 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * Creates an instance with a custom location for storing the persisted
-     * segment.
+     * Creates an instance with a custom location for storing the persisted segment.
      *
-     * @param diskStorePath The location to store the persisted segments of this
-     * map
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedHashOasisMap(String diskStorePath) {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE, diskStorePath);
     }
 
     /**
-     * Creates an instance with a custom location for storing the persisted
-     * segment.
+     * Creates an instance with a custom location for storing the persisted segment.
      *
-     * @param diskStorePath The location to store the persisted segments of this
-     * map
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedHashOasisMap(File diskStorePath) {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE, diskStorePath.getAbsolutePath());
     }
 
     /**
-     * Creates an instance with a custom number of items to be store in memory
-     * and each segment, and also a custom location to store the persisted
-     * segments
+     * Creates an instance with a custom number of items to be store in memory and
+     * each segment, and also a custom location to store the persisted segments
      *
      * @param itemsStoredInMemory
      * @param segmentSize
@@ -191,9 +186,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * Creates an instance with a custom number of items to be store in memory
-     * and each segment, and also a custom location to store the persisted
-     * segments
+     * Creates an instance with a custom number of items to be store in memory and
+     * each segment, and also a custom location to store the persisted segments
      *
      * @param itemsStoredInMemory
      * @param segmentSize
@@ -217,9 +211,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
             // construct directory structure similar to teh default execpt
             // that the base location is diffrent
 
-            // extract the oasis collection direcotory in odrer to create a similar structure in the custom
+            // extract the oasis collection direcotory in odrer to create a similar
+            // structure in the custom
             // location provided
-            String dirStruc = STORE.getAbsolutePath().substring(System.getProperty("java.io.tmpdir").length());;
+            String dirStruc = STORE.getAbsolutePath().substring(System.getProperty("java.io.tmpdir").length());
+            ;
             instanceStore = new File(customPath + dirStruc + uniqueDir);
 
             instanceStore.getParentFile().deleteOnExit();
@@ -236,7 +232,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#size() Map.size()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int size() {
@@ -248,7 +244,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#isEmpty() Map.isEmpty()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean isEmpty() {
@@ -260,7 +256,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#containsKey() Map.containsKey()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean containsKey(Object key) {
@@ -275,7 +271,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
                 // Only check memory store if it is not empty
                 // Checking is faster if map is empty because
-                // there is no need to calculate the hashcode 
+                // there is no need to calculate the hashcode
                 // of the key first
                 if (!memoryStore.isEmpty()) {
                     found = memoryStore.containsKey(key);
@@ -295,7 +291,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
                             SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
 
-                            // Only attemp to search if segmentCtx is not empty, and 
+                            // Only attemp to search if segmentCtx is not empty, and
                             // If found stop searching
                             if (!segCtx.getData().isEmpty() && (found = segCtx.getData().containsKey(key))) {
                                 break;
@@ -316,7 +312,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#containsValue() Map.containsValue()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean containsValue(Object value) {
@@ -363,7 +359,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#get() Map.get()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public V get(Object key) {
@@ -402,7 +398,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#put() Map.put()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public V put(K key, V value) {
@@ -427,8 +423,10 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
             }
         }
 
-        // if there is no overflow to disk yet, but memoryStore is full, only newSegment needs to be updated
-        if (size == memoryStore.size() || (newSegment != null && size == memoryStore.size() + newSegment.getData().size())) {
+        // if there is no overflow to disk yet, but memoryStore is full, only newSegment
+        // needs to be updated
+        if (size == memoryStore.size()
+                || (newSegment != null && size == memoryStore.size() + newSegment.getData().size())) {
 
             // Although memoryStore is full, it may already
             // contain the key for this entry
@@ -466,9 +464,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
         boolean enableCacheInternal = false;
         boolean isAdded = false;
 
-        //at this point, there are items stored on disk or in cache; therefore
+        // at this point, there are items stored on disk or in cache; therefore
         // attempt to find and overwrite this entry if it is already existing
-        // in any of memoryStore, newSegment or segments stored on disk or in 
+        // in any of memoryStore, newSegment or segments stored on disk or in
         // the cache; otherwise, insert the the new entry the first available
         // slot checking in the order memoryStore, newSegment, cache, disk
         if (memoryStore.containsKey(key)) {
@@ -544,7 +542,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /*
-    * creates a unique name for the next segment to persisted on disk
+     * creates a unique name for the next segment to persisted on disk
      */
     private String getNextSegmentName() {
         return storagePath + File.separator + "segment-" + (persistedMapTracker.size() + 1);
@@ -554,7 +552,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#remove() Map.remove()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public V remove(Object key) {
@@ -625,7 +623,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#putAll() Map.putAll()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void putAll(Map<? extends K, ? extends V> inputMap) {
@@ -656,7 +654,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#clear() Map.clear()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void clear() {
@@ -673,7 +671,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
                 try {
                     Files.deleteIfExists(file.toPath());
                 } catch (IOException ex) {
-                    Logger.getLogger(SegmentedOasisList.class.getName()).log(Level.WARNING, String.format("Unable to delete %s. Will try to delete on prograsm termination ", file.getAbsolutePath()));
+                    Logger.getLogger(SegmentedOasisList.class.getName()).log(Level.WARNING,
+                            String.format("Unable to delete %s. Will try to delete on prograsm termination ",
+                                    file.getAbsolutePath()));
                 }
             }
 
@@ -690,7 +690,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#keySet() Map.keySet()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public Set<K> keySet() {
@@ -721,7 +721,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#values() Map.values()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public Collection<V> values() {
@@ -753,7 +753,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * {@link java.util.Map#entrySet() Map.entrySet()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public Set<Entry<K, V>> entrySet() {
@@ -781,7 +781,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#destroy()
+     * SegmentedOasisCollection.destroy()}
      */
     @Override
     public void destroy() {
@@ -837,7 +838,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
         newSegment = (SegmentContext) stream.readObject();
         persistedMapTracker = (List<String>) stream.readObject();
 
-        // Ensure directory structure is recreated in case 
+        // Ensure directory structure is recreated in case
         // it had been removed
         File file = new File(storagePath);
         file.mkdirs();
@@ -879,7 +880,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
             if (segCtx == null) {
                 // If not found, then load from the disk as segments
-                // are loaded on demand 
+                // are loaded on demand
                 segCtx = getSegmentFromStore(fileName);
                 cache.put(fileName, segCtx);
             }
@@ -896,7 +897,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
         Map<K, V> read = null;
 
-        try (FileInputStream fileStrm = new FileInputStream(new File(fileName));FSTObjectInput in = new FSTObjectInput(fileStrm)) {
+        try (FileInputStream fileStrm = new FileInputStream(new File(fileName));
+                FSTObjectInput in = new FSTObjectInput(fileStrm)) {
             read = (Map<K, V>) in.readObject(Map.class);
 
         } catch (Exception ex) {
@@ -916,7 +918,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
                 cache.put(fileName, segCtx);
             } else {
 
-                try (FileOutputStream fileStrm = new FileOutputStream(new File(fileName)); FSTObjectOutput out = new FSTObjectOutput(fileStrm)) {
+                try (FileOutputStream fileStrm = new FileOutputStream(new File(fileName));
+                        FSTObjectOutput out = new FSTObjectOutput(fileStrm)) {
                     out.writeObject(segCtx.getData(), Map.class);
 
                 } catch (Exception ex) {
@@ -928,10 +931,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache()
+     * SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void enableCache() {
@@ -948,10 +952,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache()
+     * SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void disableCache() {
@@ -971,10 +976,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#compact()
+     * SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void compact() {
@@ -989,19 +995,23 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
             }
 
             try {
-                // In most cases persistedMapTracker and cache should have the same size, however,
+                // In most cases persistedMapTracker and cache should have the same size,
+                // however,
                 // if the cache is partly loaded as it is loaded on demand, then their sizes
                 // will be different; therefore, skip compacting to avoid expensive I/O
                 if (!persistedMapTracker.isEmpty() && persistedMapTracker.size() == cache.size()) {
 
-                    compact(new SegmentContext(memoryStore), cache.get(persistedMapTracker.get(0)), itemsStoredInMemory);
+                    compact(new SegmentContext(memoryStore), cache.get(persistedMapTracker.get(0)),
+                            itemsStoredInMemory);
 
                     for (int i = 1; i < persistedMapTracker.size(); i++) {
-                        compact(cache.get(persistedMapTracker.get(i - 1)), cache.get(persistedMapTracker.get(i)), itemsStoredInEachSegment);
+                        compact(cache.get(persistedMapTracker.get(i - 1)), cache.get(persistedMapTracker.get(i)),
+                                itemsStoredInEachSegment);
                     }
 
                     if (newSegment != null && !newSegment.getData().isEmpty()) {
-                        compact(cache.get(persistedMapTracker.get(persistedMapTracker.size() - 1)), newSegment, itemsStoredInEachSegment);
+                        compact(cache.get(persistedMapTracker.get(persistedMapTracker.size() - 1)), newSegment,
+                                itemsStoredInEachSegment);
                     }
 
                     removeEmptySegments();
@@ -1073,7 +1083,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
                     Files.deleteIfExists(file.toPath());
                 } catch (IOException ex) {
                     file.deleteOnExit();
-                    Logger.getLogger(SegmentedHashOasisMap.class.getName()).log(Level.WARNING, String.format("Unable to delete %s. Will try to delete on prograsm termination ", file.getAbsolutePath()));
+                    Logger.getLogger(SegmentedHashOasisMap.class.getName()).log(Level.WARNING,
+                            String.format("Unable to delete %s. Will try to delete on prograsm termination ",
+                                    file.getAbsolutePath()));
                 }
             }
         }
@@ -1092,10 +1104,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled()
+     * SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean isCacheEnabled() {
@@ -1104,10 +1117,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore()
+     * SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public String instanceStore() {
@@ -1116,10 +1130,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount()
+     * SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int persistedSegmentCount() {
