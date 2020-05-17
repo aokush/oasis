@@ -1207,7 +1207,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 
         SegmentContext read = null;
 
-        try (FSTObjectInput in = new FSTObjectInput(new FileInputStream(new File(fileName)))) {
+        try (FileInputStream fileStrm = new FileInputStream(new File(fileName));FSTObjectInput in = new FSTObjectInput(fileStrm)) {
             read = new SegmentContext((List<E>) in.readObject(List.class));
 
         } catch (Exception ex) {
@@ -1225,7 +1225,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                 cache.put(fileName, sgtCtx);
             } else {
 
-                try (FSTObjectOutput out = new FSTObjectOutput(new FileOutputStream(new File(fileName)))) {
+                try (FileOutputStream fileStrm = new FileOutputStream(new File(fileName)); FSTObjectOutput out = new FSTObjectOutput(fileStrm)) {
                     out.writeObject(sgtCtx.getData(), List.class);
 
                 } catch (Exception ex) {
@@ -1316,6 +1316,63 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                 cache = null;
             }
         }
+    }
+
+
+    /**
+     * 
+     * Compact this list toby moving items on disk to memory as long as max item stored in memory is not exceeded.
+     * 
+     * Fast compaction is only applicable when the cache is not in use.
+     *
+     * @throws IllegalStateException If destroy has already been called on this
+     *                               instance
+     */
+    // @Override
+    public void compactFast() {
+
+        checkIfDestroyed();
+        if (!isCached) {
+
+            int segTracker = 0;
+            while (memoryStore.size() < this.itemsStoredInMemory && !persistedMapTracker.isEmpty()) {
+
+                SegmentContext<List<E>> sgtCtx = getSegment(persistedMapTracker.get(segTracker));
+                if (!sgtCtx.getData().isEmpty()) {
+
+                    int itemsToMove = this.itemsStoredInMemory - memoryStore.size();
+
+                    // if the memory store has enough room for the entire data of at
+                    // least one segment
+                    if (itemsToMove >= sgtCtx.getData().size()) {
+                        memoryStore.addAll(sgtCtx.getData().subList(0, sgtCtx.getData().size()));
+                        sgtCtx.getData().clear();
+                        String filename = persistedMapTracker.remove(segTracker);
+
+                        File toDelete = new File(filename);
+                        try {
+                            Files.delete(toDelete.toPath());
+                        } catch (IOException e) {
+                            toDelete.deleteOnExit();
+                            Logger.getLogger(SegmentedHashOasisMap.class.getName()).log(Level.WARNING,
+                                    "Unable to delete empty segment file {0}. Will try to delete on prograsm termination ",
+                                    toDelete.getAbsolutePath());
+                        }
+
+                    } else {
+                        memoryStore.addAll(sgtCtx.getData().subList(0, itemsToMove));
+                        sgtCtx.setData(new ArrayList<>(sgtCtx.getData().subList(itemsToMove, sgtCtx.getData().size())));
+                        sgtCtx.markDirty();
+
+                        writeSegment(sgtCtx, persistedMapTracker.get(segTracker));
+                    }
+
+                }
+
+            }
+
+        }
+
     }
 
     @Override
