@@ -896,7 +896,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
         Map<K, V> read = null;
 
-        try (FSTObjectInput in = new FSTObjectInput(new FileInputStream(new File(fileName)))) {
+        try (FileInputStream fileStrm = new FileInputStream(new File(fileName));FSTObjectInput in = new FSTObjectInput(fileStrm)) {
             read = (Map<K, V>) in.readObject(Map.class);
 
         } catch (Exception ex) {
@@ -916,7 +916,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
                 cache.put(fileName, segCtx);
             } else {
 
-                try (FSTObjectOutput out = new FSTObjectOutput(new FileOutputStream(new File(fileName)))) {
+                try (FileOutputStream fileStrm = new FileOutputStream(new File(fileName)); FSTObjectOutput out = new FSTObjectOutput(fileStrm)) {
                     out.writeObject(segCtx.getData(), Map.class);
 
                 } catch (Exception ex) {
