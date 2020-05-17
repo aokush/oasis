@@ -67,6 +67,39 @@ public class SegmentedOasisListTest {
     }
 
     /**
+     * Test of item orering.
+     */
+    @Test
+    public void testItem_Ordering() {
+        OasisList<Integer> baseList = new SegmentedOasisList<>(2, 2);
+
+        List<Integer> expResult = Arrays.asList(1, 2, 6, 8);
+        baseList.addAll(expResult);
+
+        for (int i = 0; i < expResult.size(); i++) {
+            assertEquals(expResult.get(i), baseList.get(i));
+        }
+    }
+
+    /**
+     * Test of item orering.
+     */
+    @Test
+    public void testItem_Ordering_With_Holes() {
+        OasisList<Integer> instance = new SegmentedOasisList<>(2, 2);
+
+        List<Integer> expResult = Arrays.asList(1, 6, 8, 19);
+        instance.addAll(Arrays.asList(1, 2, 6, 8));
+
+        instance.remove(1);
+        instance.add(19);
+
+        for (int i = 0; i < expResult.size(); i++) {
+            assertEquals(expResult.get(i), instance.get(i));
+        }
+    }
+
+    /**
      * Test of isEmpty method, of class SegmentedOasisList.
      */
     @Test
