@@ -36,7 +36,7 @@ public class SegmentedOasisListTest {
     @Test
     public void testCustomStore() throws IOException {
         Path path = Files.createTempDirectory("dir");
-        
+
         SegmentedOasisList<Integer> instance = new SegmentedOasisList<>(path.toAbsolutePath().toFile());
         instance.add(1);
 
@@ -277,15 +277,14 @@ public class SegmentedOasisListTest {
         assertTrue(isEqual(instance, baseList));
 
     }
-    
-    
+
     /**
      * Test of iterator method, of class SegmentedOasisList.
      */
     @Test
     public void testIterator_Overflow() {
         OasisList<Integer> baseList = new SegmentedOasisList<>(2, 2);
-        baseList.addAll(Arrays.asList(1, 2, 6, 8, 7 , 8, 90));
+        baseList.addAll(Arrays.asList(1, 2, 6, 8, 7, 8, 90));
 
         Iterator<Integer> instance = baseList.iterator();
         assertTrue(isEqual(instance, baseList));
@@ -305,7 +304,7 @@ public class SegmentedOasisListTest {
         instance.add(5);
         instance.add(6);
 
-        Integer[] expResult = {1, 2, 3, 4, 5, 6};
+        Integer[] expResult = { 1, 2, 3, 4, 5, 6 };
         Object[] result = instance.toArray();
         assertArrayEquals(expResult, result);
 
@@ -324,8 +323,8 @@ public class SegmentedOasisListTest {
         instance.add(5);
         instance.add(6);
 
-        Integer[] expResult = {1, 2, 3, 4, 5, 6};
-        Integer[] result = instance.toArray(new Integer[]{});
+        Integer[] expResult = { 1, 2, 3, 4, 5, 6 };
+        Integer[] result = instance.toArray(new Integer[] {});
         assertArrayEquals(expResult, result);
     }
 
@@ -1353,7 +1352,7 @@ public class SegmentedOasisListTest {
         assertTrue(isEqual(instance, baseList));
 
     }
-    
+
     /**
      * Test of listIterator method, of class SegmentedOasisList.
      */
@@ -1445,7 +1444,8 @@ public class SegmentedOasisListTest {
         instance.add(new StringBuilder("1"));
         instance.add(new StringBuilder("1"));
 
-        List<StringBuilder> expResult = Arrays.asList(new StringBuilder("17"), new StringBuilder("7"), new StringBuilder("7"));
+        List<StringBuilder> expResult = Arrays.asList(new StringBuilder("17"), new StringBuilder("7"),
+                new StringBuilder("7"));
         List<StringBuilder> result = instance.subList(1, 4);
 
         instance.get(1).append("7");
@@ -1518,7 +1518,8 @@ public class SegmentedOasisListTest {
         instance.add(new StringBuilder("1"));
         instance.add(new StringBuilder("1"));
 
-        List<StringBuilder> expResult = Arrays.asList(new StringBuilder("17"), new StringBuilder("7"), new StringBuilder("7"));
+        List<StringBuilder> expResult = Arrays.asList(new StringBuilder("17"), new StringBuilder("7"),
+                new StringBuilder("7"));
         List<StringBuilder> result = instance.subList(1, 4);
 
         instance.get(1).append("7");
@@ -1618,7 +1619,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testConstructor_Custom_Store_File() {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-list-testConstructor_Custom_Store_File");
+        File file = new File(
+                System.getProperty("java.io.tmpdir") + File.separator + "oasis-list-testConstructor_Custom_Store_File");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1637,7 +1639,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testConstructor_Custom_Store_File_Overflow() {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-list-testConstructor_Custom_Store_File_Overflow");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-list-testConstructor_Custom_Store_File_Overflow");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1656,7 +1659,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testConstructor_Custom_Store_String() {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testConstructor_Custom_Store_String");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testConstructor_Custom_Store_String");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1780,7 +1784,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testPersistence_Custom_Store() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testPersistence_Custom_Store");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testPersistence_Custom_Store");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1812,7 +1817,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testPersistence_Custom_Store_Overflow() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testPersistence_Custom_Store_Overflow");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testPersistence_Custom_Store_Overflow");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1844,7 +1850,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Overflow_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Overflow_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Overflow_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1867,7 +1874,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Overflow_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Overflow_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Overflow_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1925,7 +1933,6 @@ public class SegmentedOasisListTest {
 
     }
 
-
     /**
      * Test of compact, of class SegmentedOasisList.
      */
@@ -1953,7 +1960,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Last_Segment_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1975,7 +1983,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Last_Segment_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -1995,7 +2004,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Last_Segment_Emptied_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2017,10 +2027,11 @@ public class SegmentedOasisListTest {
      * Test of compact, of class SegmentedOasisList.
      */
     @Test
-    //  @Ignore
+    // @Ignore
     public void testCompact_Last_Segment_Emptied_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2042,7 +2053,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2065,7 +2077,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2085,7 +2098,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Emptied_Caching_Enabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Enabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2109,7 +2123,8 @@ public class SegmentedOasisListTest {
     @Test
     public void testCompact_Mid_Segment_Emptied_Caching_Disabled() throws Exception {
 
-        File file = new File(System.getProperty("java.io.tmpdir") + File.separator + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
+        File file = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + "oasis-collection-testCompact_Last_Segment_Emptied_Caching_Disabled");
         file.mkdirs();
         file.deleteOnExit();
 
@@ -2126,7 +2141,7 @@ public class SegmentedOasisListTest {
 
     }
 
-    //====================== Iterator Test =========================
+    // ====================== Iterator Test =========================
     /**
      * Test of hasNext method, of class oasisListIterator.
      */
@@ -2352,7 +2367,8 @@ public class SegmentedOasisListTest {
         int expResult = 2;
         int result = instance.nextIndex();
 
-        assertEquals("Calling nextIndex at the end of the iterator should return size of the associated list", expResult, result);
+        assertEquals("Calling nextIndex at the end of the iterator should return size of the associated list",
+                expResult, result);
     }
 
     /**
@@ -2681,7 +2697,8 @@ public class SegmentedOasisListTest {
 
         ListIterator<Integer> instance = baseList.listIterator();
         instance.next();
-        instance.next();;
+        instance.next();
+        ;
 
         instance.set(3);
         instance.add(9);
@@ -2700,7 +2717,8 @@ public class SegmentedOasisListTest {
 
         ListIterator<Integer> instance = baseList.listIterator();
         instance.next();
-        instance.next();;
+        instance.next();
+        ;
 
         instance.remove();
         instance.add(9);

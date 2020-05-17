@@ -19,7 +19,7 @@ class SegmentContext<K> implements Serializable {
 
     private K data;
     private boolean isDirty;
-    
+
     SegmentContext() {
     }
 

@@ -47,7 +47,8 @@ import org.nustaq.serialization.FSTObjectOutput;
  * @author AKuseju
  * @param <E>
  */
-public class SegmentedOasisList<E extends Serializable> implements OasisList<E>, SegmentedOasisCollection, Serializable {
+public class SegmentedOasisList<E extends Serializable>
+        implements OasisList<E>, SegmentedOasisCollection, Serializable {
 
     /*
      * A shared store for all instances in teh same process
@@ -113,7 +114,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 
     static {
         DateFormat fmt = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.FULL);
-        STORE = new File(BASE_STORE_NAME + PERSISTED_SEGMENT_STORE_PREFIX + Utilities.replaceSpecialChars(fmt.format(new Date())));
+        STORE = new File(BASE_STORE_NAME + PERSISTED_SEGMENT_STORE_PREFIX
+                + Utilities.replaceSpecialChars(fmt.format(new Date())));
         STORE.getParentFile().deleteOnExit();
         STORE.deleteOnExit();
     }
@@ -129,16 +131,15 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                     Utilities.rmdir(new File(dir));
                 }
             }
-        }
-        );
+        });
     }
 
     /**
      * Creates an instance with
      * {@link org.kush.oasis.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY 200000}
      * items in memory and
-     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000}
-     * segment size
+     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
+     * size
      */
     public SegmentedOasisList() {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE);
@@ -146,8 +147,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 
     /**
      * Creates an instance with a custom number for items in memory and
-     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000}
-     * segment size
+     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
+     * size
      *
      * @param itemsStoredInMemory
      */
@@ -156,8 +157,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * Creates an instance with a custom number for items in memory and segment
-     * size
+     * Creates an instance with a custom number for items in memory and segment size
      *
      * @param itemsStoredInMemory
      * @param segmentSize
@@ -190,8 +190,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * Creates an instance with a custom number for items in memory, segment
-     * size and stored ocation provided as arguments
+     * Creates an instance with a custom number for items in memory, segment size
+     * and stored ocation provided as arguments
      *
      * @param itemsStoredInMemory
      * @param segmentSize
@@ -202,8 +202,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * Creates an instance with a custom number for items in memory, segment
-     * size and stored ocation provided as arguments
+     * Creates an instance with a custom number for items in memory, segment size
+     * and stored ocation provided as arguments
      *
      * @param itemsStoredInMemory
      * @param segmentSize
@@ -213,7 +213,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
         this.itemsStoredInMemory = itemsStoredInMemory;
         this.itemsStoredIneachSegment = segmentSize;
         memoryStore = new ArrayList<>();
-        storagePath = prepareStorage(diskStorePath);;
+        storagePath = prepareStorage(diskStorePath);
+        ;
     }
 
     private String prepareStorage(String customPath) {
@@ -227,9 +228,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
             // construct directory structure similar to teh default execpt
             // that the base location is diffrent
 
-            // extract the oasis collection direcotory in odrer to create a similar structure in the custom
+            // extract the oasis collection direcotory in odrer to create a similar
+            // structure in the custom
             // location provided
-            String dirStruc = STORE.getAbsolutePath().substring(System.getProperty("java.io.tmpdir").length());;
+            String dirStruc = STORE.getAbsolutePath().substring(System.getProperty("java.io.tmpdir").length());
+            ;
             instanceStore = new File(customPath + dirStruc + uniqueDir);
 
             instanceStore.getParentFile().deleteOnExit();
@@ -246,7 +249,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#size() List.size()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int size() {
@@ -258,7 +261,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#isEmpty() List.isEmpty()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean isEmpty() {
@@ -270,7 +273,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#contains() List.contains()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean contains(Object o) {
@@ -311,7 +314,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#toArray() List.toArray()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public Iterator<E> iterator() {
@@ -323,7 +326,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#toArray() List.toArray()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public Object[] toArray() {
@@ -351,7 +354,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#toArray(T[] a) List.toArray(T[] a)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public <T> T[] toArray(T[] a) {
@@ -387,7 +390,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#add(E e) List.add(E e)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean add(E e) {
@@ -425,7 +428,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#remove(Object o) List.remove(Object o)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean remove(Object o) {
@@ -469,7 +472,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * List.containsAll(Collection<?> c)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean containsAll(Collection<?> c) {
@@ -490,7 +493,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * ListaddAll(Collection<? extends E> c)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean addAll(Collection<? extends E> c) {
@@ -511,7 +514,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * ListaddAll(int index, Collection<? extends E> c)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
@@ -525,11 +528,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link java.util.List#removeAll(Collection<?> c)
-     * List.removeAll(Collection<?> c)}
+     * {@link java.util.List#removeAll(Collection<?> c) List.removeAll(Collection<?>
+     * c)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean removeAll(Collection<?> c) {
@@ -576,11 +579,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link java.util.List#retainAll(Collection<?> c)
-     * List.retainAll(Collection<?> c)}
+     * {@link java.util.List#retainAll(Collection<?> c) List.retainAll(Collection<?>
+     * c)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean retainAll(Collection<?> c) {
@@ -628,7 +631,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#clear() List.clear()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void clear() {
@@ -645,7 +648,9 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                 try {
                     Files.deleteIfExists(file.toPath());
                 } catch (IOException ex) {
-                    Logger.getLogger(SegmentedOasisList.class.getName()).log(Level.WARNING, String.format("Unable to delete %s. Will try to delete on prograsm termination ", file.getAbsolutePath()));
+                    Logger.getLogger(SegmentedOasisList.class.getName()).log(Level.WARNING,
+                            String.format("Unable to delete %s. Will try to delete on prograsm termination ",
+                                    file.getAbsolutePath()));
                 }
             }
 
@@ -663,7 +668,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#get(int index) List.get(int index)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public E get(int index) {
@@ -703,10 +708,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link java.util.List#set(int index, E element) List.set(int index, E element)}
+     * {@link java.util.List#set(int index, E element) List.set(int index, E
+     * element)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public E set(int index, E element) {
@@ -748,10 +754,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link java.util.List#add(int index, E element) List.add(int index, E element)}
+     * {@link java.util.List#add(int index, E element) List.add(int index, E
+     * element)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void add(int index, E element) {
@@ -805,7 +812,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#remove(int index) List.remove(int index)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public E remove(int index) {
@@ -855,7 +862,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#indexOf(Object o) List.indexOf(Object o)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int indexOf(Object o) {
@@ -902,7 +909,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#lastIndexOf(Object o) List.lastIndexOf(Object o)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int lastIndexOf(Object o) {
@@ -950,7 +957,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#listIterator() List.listIterator()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public ListIterator<E> listIterator() {
@@ -962,7 +969,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
      * {@link java.util.List#listIterator(int index) List.listIterator(int index)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public ListIterator<E> listIterator(int index) {
@@ -975,10 +982,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link java.util.List#subList(int fromIndex, int toIndex) List.subList(int fromIndex, int toIndex)}
+     * {@link java.util.List#subList(int fromIndex, int toIndex) List.subList(int
+     * fromIndex, int toIndex)}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public List<E> subList(int fromIndex, int toIndex) {
@@ -1057,10 +1065,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache()
+     * SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void enableCache() {
@@ -1073,10 +1082,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache()
+     * SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void disableCache() {
@@ -1095,10 +1105,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled()
+     * SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public boolean isCacheEnabled() {
@@ -1107,7 +1118,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#destroy()
+     * SegmentedOasisCollection.destroy()}
      */
     @Override
     public void destroy() {
@@ -1157,7 +1169,7 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 
         persistedMapTracker = (List<String>) stream.readObject();
 
-        // Ensure directory structure is recreated in case 
+        // Ensure directory structure is recreated in case
         // it had been removed
         File file = new File(storagePath);
         file.mkdirs();
@@ -1207,7 +1219,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
 
         SegmentContext read = null;
 
-        try (FileInputStream fileStrm = new FileInputStream(new File(fileName));FSTObjectInput in = new FSTObjectInput(fileStrm)) {
+        try (FileInputStream fileStrm = new FileInputStream(new File(fileName));
+                FSTObjectInput in = new FSTObjectInput(fileStrm)) {
             read = new SegmentContext((List<E>) in.readObject(List.class));
 
         } catch (Exception ex) {
@@ -1225,7 +1238,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                 cache.put(fileName, sgtCtx);
             } else {
 
-                try (FileOutputStream fileStrm = new FileOutputStream(new File(fileName)); FSTObjectOutput out = new FSTObjectOutput(fileStrm)) {
+                try (FileOutputStream fileStrm = new FileOutputStream(new File(fileName));
+                        FSTObjectOutput out = new FSTObjectOutput(fileStrm)) {
                     out.writeObject(sgtCtx.getData(), List.class);
 
                 } catch (Exception ex) {
@@ -1242,10 +1256,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore()
+     * SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public String instanceStore() {
@@ -1254,10 +1269,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount()
+     * SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int persistedSegmentCount() {
@@ -1270,10 +1286,11 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
+     * {@link org.kush.oasis.SegmentedOasisCollection#compact()
+     * SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public void compact() {
@@ -1287,18 +1304,22 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
         }
 
         try {
-            // In mots cases persistedMapTracker and cache should have the same size, however,
+            // In mots cases persistedMapTracker and cache should have the same size,
+            // however,
             // if the cache is partly loaded as it it loaded onh demand, then their sizes
             // will be different; therefore, skip compacting to avoid expensive I/O
             if (!persistedMapTracker.isEmpty() && persistedMapTracker.size() == cache.size()) {
-                compact(new SegmentContext(memoryStore), cache.get(persistedMapTracker.get(0)), itemsStoredInMemory, itemsStoredIneachSegment);
+                compact(new SegmentContext(memoryStore), cache.get(persistedMapTracker.get(0)), itemsStoredInMemory,
+                        itemsStoredIneachSegment);
 
                 for (int i = 1; i < persistedMapTracker.size(); i++) {
-                    compact(cache.get(persistedMapTracker.get(i - 1)), cache.get(persistedMapTracker.get(i)), itemsStoredIneachSegment, itemsStoredIneachSegment);
+                    compact(cache.get(persistedMapTracker.get(i - 1)), cache.get(persistedMapTracker.get(i)),
+                            itemsStoredIneachSegment, itemsStoredIneachSegment);
                 }
 
                 if (newSegment != null && !newSegment.getData().isEmpty()) {
-                    compact(cache.get(persistedMapTracker.get(persistedMapTracker.size() - 1)), newSegment, itemsStoredIneachSegment, itemsStoredIneachSegment);
+                    compact(cache.get(persistedMapTracker.get(persistedMapTracker.size() - 1)), newSegment,
+                            itemsStoredIneachSegment, itemsStoredIneachSegment);
                 }
 
                 removeEmptySegments();
@@ -1318,10 +1339,10 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
         }
     }
 
-
     /**
      * 
-     * Compact this list toby moving items on disk to memory as long as max item stored in memory is not exceeded.
+     * Compact this list toby moving items on disk to memory as long as max item
+     * stored in memory is not exceeded.
      * 
      * Fast compaction is only applicable when the cache is not in use.
      *
@@ -1436,7 +1457,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
         cache = new HashMap<>();
     }
 
-    private void compact(SegmentContext<List<E>> dest, SegmentContext<List<E>> src, int destMaxSize, int sourceMaxSize) {
+    private void compact(SegmentContext<List<E>> dest, SegmentContext<List<E>> src, int destMaxSize,
+            int sourceMaxSize) {
 
         if (dest.getData().size() < destMaxSize && !src.getData().isEmpty()) {
 
@@ -1480,34 +1502,35 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                     Files.deleteIfExists(file.toPath());
                 } catch (IOException ex) {
                     file.deleteOnExit();
-                    Logger
-                            .getLogger(SegmentedHashOasisMap.class
-                                    .getName()).log(Level.WARNING, String.format("Unable to delete %s. Will try to delete on prograsm termination ", file.getAbsolutePath()));
+                    Logger.getLogger(SegmentedHashOasisMap.class.getName()).log(Level.WARNING,
+                            String.format("Unable to delete %s. Will try to delete on prograsm termination ",
+                                    file.getAbsolutePath()));
                 }
             }
 
         }
 
-//        List filesToRemove = new ArrayList<>();
-//        persistedMapTracker.forEach(it -> {
-//            List<E> cacheItem = cache.get(it);
-//
-//            if (cacheItem.isEmpty()) {
-//                cache.remove(it);
-//                filesToRemove.add(it);
-//                File file = new File(it);
-//                try {
-//                    Files.deleteIfExists(file.toPath());
-//                } catch (IOException ex) {
-//                    file.deleteOnExit();
-//                    Logger
-//                            .getLogger(SegmentedOasisMap.class
-//                                    .getName()).log(Level.WARNING, String.format("Unable to delete %s. Will try to delete on prograsm termination ", file.getAbsolutePath()));
-//                }
-//            }
-//        });
-//
-//        persistedMapTracker.removeAll(filesToRemove);
+        // List filesToRemove = new ArrayList<>();
+        // persistedMapTracker.forEach(it -> {
+        // List<E> cacheItem = cache.get(it);
+        //
+        // if (cacheItem.isEmpty()) {
+        // cache.remove(it);
+        // filesToRemove.add(it);
+        // File file = new File(it);
+        // try {
+        // Files.deleteIfExists(file.toPath());
+        // } catch (IOException ex) {
+        // file.deleteOnExit();
+        // Logger
+        // .getLogger(SegmentedOasisMap.class
+        // .getName()).log(Level.WARNING, String.format("Unable to delete %s. Will try
+        // to delete on prograsm termination ", file.getAbsolutePath()));
+        // }
+        // }
+        // });
+        //
+        // persistedMapTracker.removeAll(filesToRemove);
     }
 
     static class OasisSegmentedListIterator<E extends Serializable> implements ListIterator<E> {
@@ -1583,7 +1606,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                 lastCall = LastCall.REMOVE;
                 backingList.remove(currentIndex);
             } else {
-                throw new IllegalStateException("remove method can only be called once after previous or next method has been called");
+                throw new IllegalStateException(
+                        "remove method can only be called once after previous or next method has been called");
             }
         }
 
@@ -1598,7 +1622,8 @@ public class SegmentedOasisList<E extends Serializable> implements OasisList<E>,
                     backingList.set(currentIndex, e);
                     lastCall = LastCall.SET;
                 } else {
-                    throw new IllegalStateException("set method can only be called once after previous or next method has been called");
+                    throw new IllegalStateException(
+                            "set method can only be called once after previous or next method has been called");
                 }
             } catch (IllegalStateException ex) {
                 throw ex;
