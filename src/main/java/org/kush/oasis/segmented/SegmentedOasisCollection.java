@@ -57,10 +57,18 @@ public interface SegmentedOasisCollection extends OasisCollection {
     boolean isCacheEnabled();
 
     /**
-     * Compact this map to reduce number of persisted segments
+     * Compact this underlying data structure to reduce number of persisted segments
      * 
      */
     void compact();
+
+
+     /**
+     * Compact this underlying data structure to reduce number of persisted segments
+     * moving items on disk to memory as long as max item stored in memory is not exceeded.
+     * 
+     */
+    void compactFast();
 
     /**
      * The store location

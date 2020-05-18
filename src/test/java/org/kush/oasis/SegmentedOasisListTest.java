@@ -1919,7 +1919,7 @@ public class SegmentedOasisListTest {
 
         SegmentedOasisList<Integer> instance = new SegmentedOasisList<>(3, 1);
 
-        // 2 persisted segment counts
+        // 1 persisted segment counts
         Collection c = Arrays.asList(1, 1, 2, 3, 4, 5);
         instance.addAll(c);
 
