@@ -6,12 +6,19 @@
 package org.kush.oasis.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author AKuseju
  */
 public class Utilities {
+
+    private static final Logger LOGGER = Logger.getLogger(Utilities.class.getName());
     
     public static final String[] SPECIAL_CHARS = {",", ":", " "};
     public static final String REPLACEMENT_CHAR = "_";
@@ -75,5 +82,26 @@ public class Utilities {
                 folder.deleteOnExit();
             }
         }
+    }
+
+    public static void deleteSegFiles(List<String> segmentToDel) {
+
+        if (!segmentToDel.isEmpty()) {            
+            segmentToDel.forEach(file -> {
+
+                File toDelete = new File(file);
+                try {
+                    Files.delete(toDelete.toPath());
+                } catch (IOException e) {
+                    toDelete.deleteOnExit();
+                    LOGGER.log(Level.WARNING,
+                            "Unable to delete segment file {0}. Will try to delete on program termination ",
+                            toDelete.getAbsolutePath());
+                }
+
+            });
+
+        }
+
     }
 }
