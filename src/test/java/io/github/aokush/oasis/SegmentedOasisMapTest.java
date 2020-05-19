@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.kush.oasis;
+package io.github.aokush.oasis;
 
-import org.kush.oasis.segmented.SegmentedHashOasisMap;
-import org.kush.oasis.util.Utilities;
+import io.github.aokush.oasis.segmented.SegmentedHashOasisMap;
+import io.github.aokush.oasis.util.Utilities;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

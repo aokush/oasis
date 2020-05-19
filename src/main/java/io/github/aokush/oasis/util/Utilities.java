@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.kush.oasis.util;
+package io.github.aokush.oasis.util;
 
 import java.io.File;
 import java.io.IOException;

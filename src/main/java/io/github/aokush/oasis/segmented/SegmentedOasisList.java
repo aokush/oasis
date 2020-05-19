@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.kush.oasis.segmented;
+package io.github.aokush.oasis.segmented;
 
-import org.kush.oasis.OasisList;
-import org.kush.oasis.util.Utilities;
+import io.github.aokush.oasis.OasisList;
+import io.github.aokush.oasis.util.Utilities;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -138,9 +138,9 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * Creates an instance with
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY
      * 200000} items in memory and
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000}
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000}
      * segment size
      */
     public SegmentedOasisList() {
@@ -149,7 +149,7 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * Creates an instance with a custom number for items in memory and
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000}
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000}
      * segment size
      *
      * @param itemsStoredInMemory
@@ -1061,7 +1061,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#enableCache()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#enableCache()
      * SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1078,7 +1078,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#disableCache()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#disableCache()
      * SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1101,7 +1101,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#isCacheEnabled()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#isCacheEnabled()
      * SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1114,7 +1114,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#destroy()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#destroy()
      * SegmentedOasisCollection.destroy()}
      */
     @Override
@@ -1252,7 +1252,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#instanceStore()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#instanceStore()
      * SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1265,7 +1265,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#persistedSegmentCount()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#persistedSegmentCount()
      * SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1282,7 +1282,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compact()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#compact()
      * SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1337,7 +1337,7 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * 
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compactFast()
+     * {@link io.github.aokush.oasis.segmented.SegmentedOasisCollection#compactFast()
      * SegmentedOasisCollection.compactFast()}
      * 
      * Fast compaction is only applicable when the cache is not in use.

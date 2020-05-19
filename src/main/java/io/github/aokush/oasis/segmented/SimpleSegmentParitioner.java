@@ -1,4 +1,4 @@
-package org.kush.oasis.segmented;
+package io.github.aokush.oasis.segmented;
 
 import java.math.BigInteger;
 
