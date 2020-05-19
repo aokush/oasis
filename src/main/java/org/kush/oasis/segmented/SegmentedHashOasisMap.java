@@ -148,7 +148,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * each segment
      *
      * @param itemsStoredInMemory Max number of items to store in memory
-     * @param segmentSize Max number of items to store in a segment
+     * @param segmentSize         Max number of items to store in a segment
      */
     public SegmentedHashOasisMap(int itemsStoredInMemory, int segmentSize) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -180,8 +180,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * each segment, and also a custom location to store the persisted segments
      *
      * @param itemsStoredInMemory Max number of items to store in memory
-     * @param segmentSize Max number of items to store in a segment
-     * @param diskStorePath The location to store the persisted segments of this map
+     * @param segmentSize         Max number of items to store in a segment
+     * @param diskStorePath       The location to store the persisted segments of
+     *                            this map
      */
     public SegmentedHashOasisMap(int itemsStoredInMemory, int segmentSize, File diskStorePath) {
         this(itemsStoredInMemory, segmentSize, diskStorePath.getAbsolutePath());
@@ -192,8 +193,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * each segment, and also a custom location to store the persisted segments
      *
      * @param itemsStoredInMemory Max number of items to store in memory
-     * @param segmentSize Max number of items to store in a segment
-     * @param diskStorePath The location to store the persisted segments of this map
+     * @param segmentSize         Max number of items to store in a segment
+     * @param diskStorePath       The location to store the persisted segments of
+     *                            this map
      */
     public SegmentedHashOasisMap(int itemsStoredInMemory, int segmentSize, String diskStorePath) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -407,7 +409,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     /**
      * {@link java.util.Map#put(Object, Object) Map.put(K, V))}
      * 
-     * @param key the key for the item to be added
+     * @param key   the key for the item to be added
      * @param value the value for the item to be added
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -566,7 +568,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * 
      * @param key the key for the entry to remove
      * 
-     * @return V The value the key points to or null if key does not exist in the map
+     * @return V The value the key points to or null if key does not exist in the
+     *         map
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -639,7 +642,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     /**
      * {@link java.util.Map#putAll(Map) Map.putAll(Map)}
      * 
-     * @param  inputMap the map to add
+     * @param inputMap the map to add
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -1070,8 +1073,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
         checkIfDestroyed();
         if (!isEmpty() && !isCached) {
 
+            List<String> segmentToDel = new ArrayList<>();
             int segTracker = 0;
-            while (memoryStore.size() < this.itemsStoredInMemory && !persistedSegTracker.isEmpty()) {
+            while (memoryStore.size() < this.itemsStoredInMemory && segTracker < persistedSegTracker.size()) {
 
                 SegmentContext<Map<K, V>> sgtCtx = getSegment(persistedSegTracker.get(segTracker));
                 if (!sgtCtx.getData().isEmpty()) {
@@ -1083,17 +1087,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
                     if (itemsToMove >= sgtCtx.getData().size()) {
                         memoryStore.putAll(sgtCtx.getData());
                         sgtCtx.getData().clear();
-                        String filename = persistedSegTracker.remove(segTracker);
-
-                        File toDelete = new File(filename);
-                        try {
-                            Files.delete(toDelete.toPath());
-                        } catch (IOException e) {
-                            toDelete.deleteOnExit();
-                            LOGGER.log(Level.WARNING,
-                                    "Unable to delete empty segment file {0}. Will try to delete on prograsm termination ",
-                                    toDelete.getAbsolutePath());
-                        }
+                        segmentToDel.add(persistedSegTracker.get(segTracker));
 
                     } else {
 
@@ -1113,7 +1107,12 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
                 }
 
+                segTracker++;
+
             }
+
+            persistedSegTracker.removeAll(segmentToDel);
+            Utilities.deleteSegFiles(segmentToDel);
         }
 
     }

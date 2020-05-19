@@ -138,10 +138,10 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * Creates an instance with
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY 200000}
-     * items in memory and
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
-     * size
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY
+     * 200000} items in memory and
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000}
+     * segment size
      */
     public SegmentedOasisList() {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE);
@@ -149,8 +149,8 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * Creates an instance with a custom number for items in memory and
-     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
-     * size
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000}
+     * segment size
      *
      * @param itemsStoredInMemory
      */
@@ -471,8 +471,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#containsAll(Collection)
-     * List.containsAll(Collection)}
+     * {@link java.util.List#containsAll(Collection) List.containsAll(Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -492,8 +491,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#addAll(Collection)
-     * ListaddAll(Collection)}
+     * {@link java.util.List#addAll(Collection) ListaddAll(Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -513,8 +511,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#addAll(int, Collection)
-     * ListaddAll(int, Collection)}
+     * {@link java.util.List#addAll(int, Collection) ListaddAll(int, Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -1354,8 +1351,9 @@ public class SegmentedOasisList<E extends Serializable>
         checkIfDestroyed();
         if (!isCached) {
 
+            List<String> segmentToDel = new ArrayList<>();
             int segTracker = 0;
-            while (memoryStore.size() < this.itemsStoredInMemory && !persistedSegTracker.isEmpty()) {
+            while (memoryStore.size() < this.itemsStoredInMemory && segTracker < persistedSegTracker.size()) {
 
                 SegmentContext<List<E>> sgtCtx = getSegment(persistedSegTracker.get(segTracker));
                 if (!sgtCtx.getData().isEmpty()) {
@@ -1367,17 +1365,7 @@ public class SegmentedOasisList<E extends Serializable>
                     if (itemsToMove >= sgtCtx.getData().size()) {
                         memoryStore.addAll(sgtCtx.getData());
                         sgtCtx.getData().clear();
-                        String filename = persistedSegTracker.remove(segTracker);
-
-                        File toDelete = new File(filename);
-                        try {
-                            Files.delete(toDelete.toPath());
-                        } catch (IOException e) {
-                            toDelete.deleteOnExit();
-                            LOGGER.log(Level.WARNING,
-                                    "Unable to delete empty segment file {0}. Will try to delete on prograsm termination ",
-                                    toDelete.getAbsolutePath());
-                        }
+                        segmentToDel.add(persistedSegTracker.get(segTracker));
 
                     } else {
                         memoryStore.addAll(sgtCtx.getData().subList(0, itemsToMove));
@@ -1385,12 +1373,17 @@ public class SegmentedOasisList<E extends Serializable>
                         sgtCtx.markDirty();
 
                         writeSegment(sgtCtx, persistedSegTracker.get(segTracker));
+
                     }
 
                 }
 
+                segTracker++;
+
             }
 
+            persistedSegTracker.removeAll(segmentToDel);
+            Utilities.deleteSegFiles(segmentToDel);
         }
 
     }
