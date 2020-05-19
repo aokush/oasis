@@ -44,6 +44,8 @@ import org.nustaq.serialization.FSTObjectOutput;
  */
 public class SegmentedOasisMap<K extends Serializable, V extends Serializable> implements Serializable, OasisMap<K, V>, SegmentedOasisCollection {
 
+    private static final Logger LOGGER = Logger.getLogger(SegmentedOasisMap.class.getName());
+
     /*
      * A shared store for all instances in teh same process
      */
@@ -90,7 +92,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     /*
      * A list for tracking the file names of the persisted segments
      */
-    private List<String> persistedMapTracker = new ArrayList<>();
+    private List<String> persistedSegTracker = new ArrayList<>();
 
     /*
      * Is the cache enabled
@@ -140,7 +142,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     /**
      * Creates an instance with a custom number of items to be store in memory
      *
-     * @param itemsStoredInMemory
+     * @param itemsStoredInMemory Max number of items to store in memory
      */
     public SegmentedOasisMap(int itemsStoredInMemory) {
         this(itemsStoredInMemory, SEGMENT_SIZE);
@@ -150,8 +152,8 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
      * Creates an instance with a custom number of items to be store in memory
      * and each segment
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
      */
     public SegmentedOasisMap(int itemsStoredInMemory, int segmentSize) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -161,48 +163,42 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * Creates an instance with a custom location for storing the persisted
-     * segment.
+     * Creates an instance with a custom location for storing the persisted segment.
      *
-     * @param diskStorePath The location to store the persisted segments of this
-     * map
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(String diskStorePath) {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE, diskStorePath);
     }
 
     /**
-     * Creates an instance with a custom location for storing the persisted
-     * segment.
+     * Creates an instance with a custom location for storing the persisted segment.
      *
-     * @param diskStorePath The location to store the persisted segments of this
-     * map
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(File diskStorePath) {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE, diskStorePath.getAbsolutePath());
     }
 
     /**
-     * Creates an instance with a custom number of items to be store in memory
-     * and each segment, and also a custom location to store the persisted
-     * segments
+     * Creates an instance with a custom number of items to be store in memory and
+     * each segment, and also a custom location to store the persisted segments
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
-     * @param diskStorePath
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(int itemsStoredInMemory, int segmentSize, File diskStorePath) {
         this(itemsStoredInMemory, segmentSize, diskStorePath.getAbsolutePath());
     }
 
     /**
-     * Creates an instance with a custom number of items to be store in memory
-     * and each segment, and also a custom location to store the persisted
-     * segments
+     * Creates an instance with a custom number of items to be store in memory and
+     * each segment, and also a custom location to store the persisted segments
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
-     * @param diskStorePath
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(int itemsStoredInMemory, int segmentSize, String diskStorePath) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -239,9 +235,11 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
 
     /**
      * {@link java.util.Map#size() Map.size()}
+     * 
+     * @return The number of items in this map
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int size() {
@@ -262,7 +260,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#containsKey() Map.containsKey()}
+     * {@link java.util.Map#containsKey(Object) Map.containsKey(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -296,7 +294,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                     // If not found
                     if (!found) {
 
-                        for (String fileName : persistedMapTracker) {
+                        for (String fileName : persistedSegTracker) {
 
                             SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
 
@@ -318,7 +316,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#containsValue() Map.containsValue()}
+     * {@link java.util.Map#containsValue(Object) Map.containsValue(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -346,7 +344,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
 
                     if (!found) {
 
-                        for (String fileName : persistedMapTracker) {
+                        for (String fileName : persistedSegTracker) {
 
                             SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
                             if (!segCtx.getData().isEmpty() && (found = segCtx.getData().containsValue(value))) {
@@ -365,7 +363,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#get() Map.get()}
+     * {@link java.util.Map#get(Object) Map.get(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -388,7 +386,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 }
 
                 if (value == null) {
-                    for (String fileName : persistedMapTracker) {
+                    for (String fileName : persistedSegTracker) {
 
                         SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
                         if (!segCtx.getData().isEmpty() && (value = segCtx.getData().get(key)) != null) {
@@ -404,7 +402,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#put() Map.put()}
+     * {@link java.util.Map#put(Object, Object) Map.put(K, V)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -460,7 +458,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                     String fileName = getNextSegmentName();
                     newSegment.markDirty();
                     writeSegment(newSegment, fileName);
-                    persistedMapTracker.add(fileName);
+                    persistedSegTracker.add(fileName);
                     newSegment = null;
                 }
             }
@@ -482,7 +480,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
         } else if (newSegment != null && newSegment.getData().containsKey(key)) {
             previous = newSegment.getData().put(key, value);
             isAdded = true;
-        } else if (!persistedMapTracker.isEmpty()) {
+        } else if (!persistedSegTracker.isEmpty()) {
 
             // enable cache if it is not already enabled
             if (!isCached) {
@@ -492,8 +490,8 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
 
             String fileName;
             SegmentContext<Map<K, V>> segCtx;
-            for (int i = 0; i < persistedMapTracker.size(); i++) {
-                fileName = persistedMapTracker.get(i);
+            for (int i = 0; i < persistedSegTracker.size(); i++) {
+                fileName = persistedSegTracker.get(i);
                 segCtx = getSegment(fileName);
 
                 if (!segCtx.getData().isEmpty() && segCtx.getData().containsKey(key)) {
@@ -533,7 +531,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                     // Mark dirty to write segment
                     newSegment.markDirty();
                     writeSegment(newSegment, fileName);
-                    persistedMapTracker.add(fileName);
+                    persistedSegTracker.add(fileName);
                     newSegment = new SegmentContext(new LinkedHashMap<>());
                 }
                 newSegment.getData().put(key, value);
@@ -552,11 +550,11 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     * creates a unique name for the next segment to persisted on disk
      */
     private String getNextSegmentName() {
-        return storagePath + File.separator + "segment-" + (persistedMapTracker.size() + 1);
+        return storagePath + File.separator + "segment-" + (persistedSegTracker.size() + 1);
     }
 
     /**
-     * {@link java.util.Map#remove() Map.remove()}
+     * {@link java.util.Map#remove(Object) Map.remove(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -593,7 +591,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
 
                 if (!isRemoved) {
 
-                    for (String fileName : persistedMapTracker) {
+                    for (String fileName : persistedSegTracker) {
 
                         SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
 
@@ -627,7 +625,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#putAll() Map.putAll()}
+     * {@link java.util.Map#putAll(Map) Map.putAll(Map)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -673,7 +671,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 newSegment.getData().clear();
             }
 
-            for (String f : persistedMapTracker) {
+            for (String f : persistedSegTracker) {
                 File file = new File(f);
                 try {
                     Files.deleteIfExists(file.toPath());
@@ -686,7 +684,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 cache.clear();
             }
 
-            persistedMapTracker.clear();
+            persistedSegTracker.clear();
             size = 0;
         }
     }
@@ -712,7 +710,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 keys.addAll(newSegment.getData().keySet());
             }
 
-            persistedMapTracker.stream().forEach((fileName) -> {
+            persistedSegTracker.stream().forEach((fileName) -> {
                 SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
                 if (!segCtx.getData().isEmpty()) {
                     keys.addAll(segCtx.getData().keySet());
@@ -743,7 +741,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 values.addAll(newSegment.getData().values());
             }
 
-            persistedMapTracker.stream().forEach((fileName) -> {
+            persistedSegTracker.stream().forEach((fileName) -> {
                 SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
                 if (!segCtx.getData().isEmpty()) {
                     values.addAll(segCtx.getData().values());
@@ -773,7 +771,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 entries.addAll(newSegment.getData().entrySet());
             }
 
-            persistedMapTracker.stream().forEach((fileName) -> {
+            persistedSegTracker.stream().forEach((fileName) -> {
                 SegmentContext<Map<K, V>> segCtx = getSegment(fileName);
                 if (!segCtx.getData().isEmpty()) {
                     entries.addAll(segCtx.getData().entrySet());
@@ -786,7 +784,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
      */
     @Override
     public void destroy() {
@@ -797,7 +795,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
             try {
                 finalize();
             } catch (Throwable ex) {
-                Logger.getLogger(SegmentedOasisMap.class.getName()).log(Level.SEVERE, null, ex);
+                LOGGER.log(Level.SEVERE, null, ex);
             }
             isDestroyed = true;
 
@@ -821,9 +819,9 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
         stream.writeUTF(storagePath);
         stream.writeObject(memoryStore);
         stream.writeObject(newSegment);
-        stream.writeObject(persistedMapTracker);
+        stream.writeObject(persistedSegTracker);
 
-        for (String fileName : persistedMapTracker) {
+        for (String fileName : persistedSegTracker) {
             stream.writeObject(getSegment(fileName).getData());
         }
 
@@ -840,7 +838,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
         storagePath = stream.readUTF();
         memoryStore = (Map<K, V>) stream.readObject();
         newSegment = (SegmentContext) stream.readObject();
-        persistedMapTracker = (List<String>) stream.readObject();
+        persistedSegTracker = (List<String>) stream.readObject();
 
         // Ensure directory structure is recreated in case 
         // it had been removed
@@ -848,7 +846,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
         file.mkdirs();
 
         SegmentContext segCtx;
-        for (String fileName : persistedMapTracker) {
+        for (String fileName : persistedSegTracker) {
             segCtx = new SegmentContext((Map<K, V>) stream.readObject());
             // mark segment dirty; otherwise, it won't be written to disk
             segCtx.markDirty();
@@ -905,7 +903,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
             read = (Map<K, V>) in.readObject(Map.class);
 
         } catch (Exception ex) {
-            Logger.getLogger(SegmentedOasisMap.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
 
         return new SegmentContext(read);
@@ -925,7 +923,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                     out.writeObject(segCtx.getData(), Map.class);
 
                 } catch (Exception ex) {
-                    Logger.getLogger(SegmentedOasisMap.class.getName()).log(Level.SEVERE, null, ex);
+                    LOGGER.log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -933,7 +931,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -953,7 +951,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -976,7 +974,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -988,7 +986,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
         if (!isEmpty()) {
             if (!isCached) {
                 initCache();
-                persistedMapTracker.forEach(it -> {
+                persistedSegTracker.forEach(it -> {
                     cache.put(it, getSegment(it));
                 });
             }
@@ -997,22 +995,22 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 // In most cases persistedMapTracker and cache should have the same size, however,
                 // if the cache is partly loaded as it is loaded on demand, then their sizes
                 // will be different; therefore, skip compacting to avoid expensive I/O
-                if (!persistedMapTracker.isEmpty() && persistedMapTracker.size() == cache.size()) {
+                if (!persistedSegTracker.isEmpty() && persistedSegTracker.size() == cache.size()) {
 
-                    compact(new SegmentContext(memoryStore), cache.get(persistedMapTracker.get(0)), itemsStoredInMemory);
+                    compact(new SegmentContext(memoryStore), cache.get(persistedSegTracker.get(0)), itemsStoredInMemory);
 
-                    for (int i = 1; i < persistedMapTracker.size(); i++) {
-                        compact(cache.get(persistedMapTracker.get(i - 1)), cache.get(persistedMapTracker.get(i)), itemsStoredInEachSegment);
+                    for (int i = 1; i < persistedSegTracker.size(); i++) {
+                        compact(cache.get(persistedSegTracker.get(i - 1)), cache.get(persistedSegTracker.get(i)), itemsStoredInEachSegment);
                     }
 
                     if (newSegment != null && !newSegment.getData().isEmpty()) {
-                        compact(cache.get(persistedMapTracker.get(persistedMapTracker.size() - 1)), newSegment, itemsStoredInEachSegment);
+                        compact(cache.get(persistedSegTracker.get(persistedSegTracker.size() - 1)), newSegment, itemsStoredInEachSegment);
                     }
 
                     removeEmptySegments();
 
                     if (!isCached) {
-                        persistedMapTracker.forEach(it -> {
+                        persistedSegTracker.forEach(it -> {
                             writeSegment(cache.get(it), it);
                         });
                     }
@@ -1022,6 +1020,67 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                 if (!isCached) {
                     cache = null;
                 }
+            }
+        }
+
+    }
+
+    /**
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compactFast()
+     * SegmentedOasisCollection.compactFast()}
+     *
+     * @throws IllegalStateException If destroy has already been called on this
+     *                               instance
+     */
+    @Override
+    public void compactFast() {
+
+        checkIfDestroyed();
+        if (!isEmpty() && !isCached) {
+
+            int segTracker = 0;
+            while (memoryStore.size() < this.itemsStoredInMemory && !persistedSegTracker.isEmpty()) {
+
+                SegmentContext<Map<K, V>> sgtCtx = getSegment(persistedSegTracker.get(segTracker));
+                if (!sgtCtx.getData().isEmpty()) {
+
+                    int itemsToMove = this.itemsStoredInMemory - memoryStore.size();
+
+                    // if the memory store has enough room for the entire data of at
+                    // least one segment
+                    if (itemsToMove >= sgtCtx.getData().size()) {
+                        memoryStore.putAll(sgtCtx.getData());
+                        sgtCtx.getData().clear();
+                        String filename = persistedSegTracker.remove(segTracker);
+
+                        File toDelete = new File(filename);
+                        try {
+                            Files.delete(toDelete.toPath());
+                        } catch (IOException e) {
+                            toDelete.deleteOnExit();
+                            LOGGER.log(Level.WARNING,
+                                    "Unable to delete empty segment file {0}. Will try to delete on prograsm termination ",
+                                    toDelete.getAbsolutePath());
+                        }
+
+                    } else {
+
+                        Iterator<Entry<K, V>> itr = sgtCtx.getData().entrySet().iterator();
+                        Entry<K, V> temp;
+
+                        for (int i = 0; itr.hasNext() && i < itemsToMove; i++) {
+                            temp = itr.next();
+                            memoryStore.put(temp.getKey(), temp.getValue());
+                            // remove from src
+                            itr.remove();
+                        }
+
+                        sgtCtx.markDirty();
+                        writeSegment(sgtCtx, persistedSegTracker.get(segTracker));
+                    }
+
+                }
+
             }
         }
 
@@ -1063,7 +1122,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
 
     private void removeEmptySegments() {
 
-        Iterator<String> itr = persistedMapTracker.iterator();
+        Iterator<String> itr = persistedSegTracker.iterator();
         String item;
         while (itr.hasNext()) {
             item = itr.next();
@@ -1078,7 +1137,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
                     Files.deleteIfExists(file.toPath());
                 } catch (IOException ex) {
                     file.deleteOnExit();
-                    Logger.getLogger(SegmentedOasisMap.class.getName()).log(Level.WARNING, String.format("Unable to delete %s. Will try to delete on prograsm termination ", file.getAbsolutePath()));
+                    LOGGER.log(Level.WARNING, String.format("Unable to delete %s. Will try to delete on prograsm termination ", file.getAbsolutePath()));
                 }
             }
         }
@@ -1097,7 +1156,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1109,7 +1168,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1121,7 +1180,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1129,6 +1188,6 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     @Override
     public int persistedSegmentCount() {
         checkIfDestroyed();
-        return persistedMapTracker.size();
+        return persistedSegTracker.size();
     }
 }

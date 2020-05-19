@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.IntStream;
 import java.util.Set;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -2267,6 +2268,69 @@ public class SegmentedOasisMapTest {
         
         instance.enableCache();
         
+    }
+
+
+    /**
+     * Test of compact, of class SegmentedOasisList.
+     */
+    @Test
+    public void testCompactFast_One_Sgement_Removed() throws Exception {
+
+        SegmentedHashOasisMap<Integer, Integer> instance = new SegmentedHashOasisMap<>(3, 2);
+
+        // 2 persisted segment counts
+        IntStream.rangeClosed(1, 8).forEach(it ->  instance.put(it, it));
+
+        // remove 2 items form memory before compacting fast
+        instance.remove(1);
+        instance.remove(3);
+
+        instance.compactFast();
+
+        assertEquals(1, instance.persistedSegmentCount());
+
+    }
+
+    /**
+     * Test of compact, of class SegmentedOasisList.
+     */
+    @Test
+    public void testCompactFast_Muliple_Sgements_Removed() throws Exception {
+
+        SegmentedHashOasisMap<Integer, Integer> instance = new SegmentedHashOasisMap<>(3, 1);
+
+        // 1 persisted segment counts
+        IntStream.rangeClosed(1, 6).forEach(it ->  instance.put(it, it));
+
+        // remove 2 items from memory before compacting fast
+        instance.remove(1);
+        instance.remove(2);
+
+        instance.compactFast();
+
+        assertEquals(0, instance.persistedSegmentCount());
+
+    }
+
+    /**
+     * Test of compact, of class SegmentedOasisList.
+     */
+    @Test
+    public void testCompactFast_Sgement_Not_Removed() throws Exception {
+
+        SegmentedHashOasisMap<Integer, Integer> instance = new SegmentedHashOasisMap<>(3, 2);
+
+        // 2 persisted segment counts
+        IntStream.rangeClosed(1, 8).forEach(it ->  instance.put(it, it));
+
+        // remove 2 items form memory before compacting fast
+        instance.remove(1);
+
+        instance.compactFast();
+
+        assertEquals(2, instance.persistedSegmentCount());
+
     }
     
     
