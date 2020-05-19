@@ -138,9 +138,9 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * Creates an instance with
-     * {@link org.kush.oasis.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY 200000}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#OJBECT_COUNT_IN_MEMORY 200000}
      * items in memory and
-     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
      * size
      */
     public SegmentedOasisList() {
@@ -149,7 +149,7 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * Creates an instance with a custom number for items in memory and
-     * {@link org.kush.oasis.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#SEGMENT_SIZE 50000} segment
      * size
      *
      * @param itemsStoredInMemory
@@ -272,7 +272,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#contains() List.contains()}
+     * {@link java.util.List#contains(Object) List.contains(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -353,10 +353,11 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#toArray(T[] a) List.toArray(T[] a)}
+     * {@link java.util.List#toArray(Object[]) List.toArray(T[])}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
+     * @return T[]
      */
     @Override
     public <T> T[] toArray(T[] a) {
@@ -389,7 +390,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#add(E e) List.add(E e)}
+     * {@link java.util.List#add(Object) List.add(E)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -470,8 +471,8 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#containsAll(Collection<?> c)
-     * List.containsAll(Collection<?> c)}
+     * {@link java.util.List#containsAll(Collection)
+     * List.containsAll(Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -491,8 +492,8 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#addAll(Collection<? extends E> c)
-     * ListaddAll(Collection<? extends E> c)}
+     * {@link java.util.List#addAll(Collection)
+     * ListaddAll(Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -512,8 +513,8 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#addAll(int index, Collection<? extends E> c)
-     * ListaddAll(int index, Collection<? extends E> c)}
+     * {@link java.util.List#addAll(int, Collection)
+     * ListaddAll(int, Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -530,8 +531,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#removeAll(Collection<?> c) List.removeAll(Collection<?>
-     * c)}
+     * {@link java.util.List#removeAll(Collection) List.removeAll(Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -581,8 +581,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#retainAll(Collection<?> c) List.retainAll(Collection<?>
-     * c)}
+     * {@link java.util.List#retainAll(Collection) List.retainAll(Collection)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -710,8 +709,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#set(int index, E element) List.set(int index, E
-     * element)}
+     * {@link java.util.List#set(int, Object) List.set(int, E)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -756,8 +754,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link java.util.List#add(int index, E element) List.add(int index, E
-     * element)}
+     * {@link java.util.List#add(int, Object) List.add(int, E)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -1067,7 +1064,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#enableCache()
      * SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1084,7 +1081,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#disableCache()
      * SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1107,7 +1104,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#isCacheEnabled()
      * SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1120,7 +1117,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#destroy()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#destroy()
      * SegmentedOasisCollection.destroy()}
      */
     @Override
@@ -1258,7 +1255,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#instanceStore()
      * SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1271,7 +1268,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#persistedSegmentCount()
      * SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1288,7 +1285,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compact()
      * SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1343,7 +1340,7 @@ public class SegmentedOasisList<E extends Serializable>
 
     /**
      * 
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compactFast()
      * SegmentedOasisCollection.compactFast()}
      * 
      * Fast compaction is only applicable when the cache is not in use.

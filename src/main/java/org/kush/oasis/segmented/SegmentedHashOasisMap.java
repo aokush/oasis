@@ -137,7 +137,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     /**
      * Creates an instance with a custom number of items to be store in memory
      *
-     * @param itemsStoredInMemory
+     * @param itemsStoredInMemory Max number of items to store in memory
      */
     public SegmentedHashOasisMap(int itemsStoredInMemory) {
         this(itemsStoredInMemory, SEGMENT_SIZE);
@@ -147,8 +147,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * Creates an instance with a custom number of items to be store in memory and
      * each segment
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
      */
     public SegmentedHashOasisMap(int itemsStoredInMemory, int segmentSize) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -179,9 +179,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * Creates an instance with a custom number of items to be store in memory and
      * each segment, and also a custom location to store the persisted segments
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
-     * @param diskStorePath
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedHashOasisMap(int itemsStoredInMemory, int segmentSize, File diskStorePath) {
         this(itemsStoredInMemory, segmentSize, diskStorePath.getAbsolutePath());
@@ -191,9 +191,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * Creates an instance with a custom number of items to be store in memory and
      * each segment, and also a custom location to store the persisted segments
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
-     * @param diskStorePath
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedHashOasisMap(int itemsStoredInMemory, int segmentSize, String diskStorePath) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -232,6 +232,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
     /**
      * {@link java.util.Map#size() Map.size()}
+     * 
+     * @return The number of items in this map
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -255,7 +257,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link java.util.Map#containsKey() Map.containsKey()}
+     * {@link java.util.Map#containsKey(Object) Map.containsKey(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -311,7 +313,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link java.util.Map#containsValue() Map.containsValue()}
+     * {@link java.util.Map#containsValue(Object) Map.containsValue(Object)}
+     * 
+     * @param value item to find in the values
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -358,7 +362,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link java.util.Map#get() Map.get()}
+     * {@link java.util.Map#get(Object) Map.get(Object)}
+     * 
+     * @param key find the value the key points to
+     * 
+     * @return V the value the key param points to or null if key does not exist
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -397,7 +405,10 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link java.util.Map#put() Map.put()}
+     * {@link java.util.Map#put(Object, Object) Map.put(K, V))}
+     * 
+     * @param key the key for the item to be added
+     * @param value the value for the item to be added
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -551,7 +562,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link java.util.Map#remove() Map.remove()}
+     * {@link java.util.Map#remove(Object) Map.remove(Object)}
+     * 
+     * @param key the key for the entry to remove
+     * 
+     * @return V The value the key points to or null if key does not exist in the map
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -622,7 +637,9 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link java.util.Map#putAll() Map.putAll()}
+     * {@link java.util.Map#putAll(Map) Map.putAll(Map)}
+     * 
+     * @param  inputMap the map to add
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -690,6 +707,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
     /**
      * {@link java.util.Map#keySet() Map.keySet()}
+     * 
+     * @return A set of all the keys in this map
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -721,6 +740,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
     /**
      * {@link java.util.Map#values() Map.values()}
+     * 
+     * @return a collection of all the values in this map.
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -753,6 +774,8 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
     /**
      * {@link java.util.Map#entrySet() Map.entrySet()}
+     * 
+     * @return A set of of the the entries in this map
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -783,7 +806,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#destroy()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#destroy()
      * SegmentedOasisCollection.destroy()}
      */
     @Override
@@ -933,7 +956,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#enableCache()
      * SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -954,7 +977,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#disableCache()
      * SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -978,7 +1001,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compact()
      * SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1035,7 +1058,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compactFast()
      * SegmentedOasisCollection.compactFast()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1167,8 +1190,10 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#isCacheEnabled()
      * SegmentedOasisCollection.isCacheEnabled()}
+     * 
+     * @return boolean
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -1180,8 +1205,10 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#instanceStore()
      * SegmentedOasisCollection.instanceStore()}
+     * 
+     * @return A string representation of the backing disk store
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance
@@ -1193,8 +1220,10 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#persistedSegmentCount()
      * SegmentedOasisCollection.persistedSegmentCount()}
+     * 
+     * @return A count of the number of segments saved to disk store.
      *
      * @throws IllegalStateException If destroy has already been called on this
      *                               instance

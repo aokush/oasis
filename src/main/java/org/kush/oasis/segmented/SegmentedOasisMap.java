@@ -142,7 +142,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     /**
      * Creates an instance with a custom number of items to be store in memory
      *
-     * @param itemsStoredInMemory
+     * @param itemsStoredInMemory Max number of items to store in memory
      */
     public SegmentedOasisMap(int itemsStoredInMemory) {
         this(itemsStoredInMemory, SEGMENT_SIZE);
@@ -152,8 +152,8 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
      * Creates an instance with a custom number of items to be store in memory
      * and each segment
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
      */
     public SegmentedOasisMap(int itemsStoredInMemory, int segmentSize) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -163,48 +163,42 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * Creates an instance with a custom location for storing the persisted
-     * segment.
+     * Creates an instance with a custom location for storing the persisted segment.
      *
-     * @param diskStorePath The location to store the persisted segments of this
-     * map
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(String diskStorePath) {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE, diskStorePath);
     }
 
     /**
-     * Creates an instance with a custom location for storing the persisted
-     * segment.
+     * Creates an instance with a custom location for storing the persisted segment.
      *
-     * @param diskStorePath The location to store the persisted segments of this
-     * map
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(File diskStorePath) {
         this(OJBECT_COUNT_IN_MEMORY, SEGMENT_SIZE, diskStorePath.getAbsolutePath());
     }
 
     /**
-     * Creates an instance with a custom number of items to be store in memory
-     * and each segment, and also a custom location to store the persisted
-     * segments
+     * Creates an instance with a custom number of items to be store in memory and
+     * each segment, and also a custom location to store the persisted segments
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
-     * @param diskStorePath
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(int itemsStoredInMemory, int segmentSize, File diskStorePath) {
         this(itemsStoredInMemory, segmentSize, diskStorePath.getAbsolutePath());
     }
 
     /**
-     * Creates an instance with a custom number of items to be store in memory
-     * and each segment, and also a custom location to store the persisted
-     * segments
+     * Creates an instance with a custom number of items to be store in memory and
+     * each segment, and also a custom location to store the persisted segments
      *
-     * @param itemsStoredInMemory
-     * @param segmentSize
-     * @param diskStorePath
+     * @param itemsStoredInMemory Max number of items to store in memory
+     * @param segmentSize Max number of items to store in a segment
+     * @param diskStorePath The location to store the persisted segments of this map
      */
     public SegmentedOasisMap(int itemsStoredInMemory, int segmentSize, String diskStorePath) {
         this.itemsStoredInMemory = itemsStoredInMemory;
@@ -241,9 +235,11 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
 
     /**
      * {@link java.util.Map#size() Map.size()}
+     * 
+     * @return The number of items in this map
      *
      * @throws IllegalStateException If destroy has already been called on this
-     * instance
+     *                               instance
      */
     @Override
     public int size() {
@@ -264,7 +260,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#containsKey() Map.containsKey()}
+     * {@link java.util.Map#containsKey(Object) Map.containsKey(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -320,7 +316,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#containsValue() Map.containsValue()}
+     * {@link java.util.Map#containsValue(Object) Map.containsValue(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -367,7 +363,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#get() Map.get()}
+     * {@link java.util.Map#get(Object) Map.get(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -406,7 +402,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#put() Map.put()}
+     * {@link java.util.Map#put(Object, Object) Map.put(K, V)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -558,7 +554,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#remove() Map.remove()}
+     * {@link java.util.Map#remove(Object) Map.remove(Object)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -629,7 +625,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link java.util.Map#putAll() Map.putAll()}
+     * {@link java.util.Map#putAll(Map) Map.putAll(Map)}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -788,7 +784,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#destroy() SegmentedOasisCollection.destroy()}
      */
     @Override
     public void destroy() {
@@ -935,7 +931,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#enableCache() SegmentedOasisCollection.enableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -955,7 +951,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#disableCache() SegmentedOasisCollection.disableCache()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -978,7 +974,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compact() SegmentedOasisCollection.compact()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1030,7 +1026,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#compact()
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#compactFast()
      * SegmentedOasisCollection.compactFast()}
      *
      * @throws IllegalStateException If destroy has already been called on this
@@ -1160,7 +1156,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#isCacheEnabled() SegmentedOasisCollection.isCacheEnabled()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1172,7 +1168,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#instanceStore() SegmentedOasisCollection.instanceStore()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
@@ -1184,7 +1180,7 @@ public class SegmentedOasisMap<K extends Serializable, V extends Serializable> i
     }
 
     /**
-     * {@link org.kush.oasis.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
+     * {@link org.kush.oasis.segmented.SegmentedOasisCollection#persistedSegmentCount() SegmentedOasisCollection.persistedSegmentCount()}
      *
      * @throws IllegalStateException If destroy has already been called on this
      * instance
