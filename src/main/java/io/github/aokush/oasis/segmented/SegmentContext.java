@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.kush.oasis.segmented;
+package io.github.aokush.oasis.segmented;
 
 import java.io.Serializable;
 import java.util.Objects;

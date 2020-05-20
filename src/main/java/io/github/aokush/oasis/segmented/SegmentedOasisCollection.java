@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.kush.oasis.segmented;
+package io.github.aokush.oasis.segmented;
 
-import org.kush.oasis.OasisCollection;
+import io.github.aokush.oasis.OasisCollection;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 

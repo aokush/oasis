@@ -1,4 +1,4 @@
-package org.kush.oasis.segmented;
+package io.github.aokush.oasis.segmented;
 
 /**
  * Generates a value that determines the segment where an entry should be stored
