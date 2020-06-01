@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -1934,6 +1935,30 @@ public class SegmentedOasisListTest {
 
     }
 
+    
+    /**
+     * Test of compact, of class SegmentedOasisList.
+     */
+    @Test
+    public void testCompactFast_Sgement_Removed_Item_Order() throws Exception {
+
+        SegmentedOasisList<Integer> instance = new SegmentedOasisList<>(3, 1);
+
+        // 1 persisted segment counts
+        List c = Arrays.asList(1, 1, 2, 3, 4, 5);
+        List expected = c.subList(2, c.size());
+        instance.addAll(c);
+
+        // remove 2 items form memory before compacting fast
+        instance.remove(0);
+        instance.remove(0);
+
+        instance.compactFast();
+
+        assertEquals(expected, instance.subList(0, instance.size()));
+
+    }
+
     /**
      * Test of compact, of class SegmentedOasisList.
      */
@@ -1954,6 +1979,7 @@ public class SegmentedOasisListTest {
         assertEquals(2, instance.persistedSegmentCount());
 
     }
+
 
     /**
      * Test of compact, of class SegmentedOasisList.

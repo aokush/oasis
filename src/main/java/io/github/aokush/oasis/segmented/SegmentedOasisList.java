@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.github.aokush.oasis.segmented;
 
-import io.github.aokush.oasis.OasisList;
-import io.github.aokush.oasis.util.Utilities;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,8 +22,12 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.nustaq.serialization.FSTObjectInput;
 import org.nustaq.serialization.FSTObjectOutput;
+
+import io.github.aokush.oasis.OasisList;
+import io.github.aokush.oasis.util.Utilities;
 
 /**
  * An instance of SegmentedOasisList provides an implementation of
@@ -98,6 +95,11 @@ public class SegmentedOasisList<E extends Serializable>
      * A list for tracking the file names of the persisted segments
      */
     private List<String> persistedSegTracker = new ArrayList<>();
+
+    /*
+     * A numerical id appended to sgement file name to create a unique file
+     */
+    private int numberId;
 
     /*
      * Is the cache enabled
@@ -1248,7 +1250,7 @@ public class SegmentedOasisList<E extends Serializable>
     }
 
     private String getNextSegmentName() {
-        return storagePath + File.separator + "segment-" + (persistedSegTracker.size() + 1);
+        return storagePath + File.separator + "segment-" + numberId++;
     }
 
     /**
@@ -1384,8 +1386,28 @@ public class SegmentedOasisList<E extends Serializable>
 
             persistedSegTracker.removeAll(segmentToDel);
             Utilities.deleteSegFiles(segmentToDel);
+
+            // new segmenyt may contain data that may need to be compacted as well
+            if (memoryStore.size() < this.itemsStoredInMemory && persistedSegTracker.isEmpty() && newSegment != null) {
+    
+                if (!newSegment.getData().isEmpty()) {
+                    int itemsToMove = this.itemsStoredInMemory - memoryStore.size();
+
+                    if (itemsToMove >= newSegment.getData().size()) {
+                        memoryStore.addAll(newSegment.getData());
+                        newSegment.getData().clear();
+                    } else {
+                        memoryStore.addAll(newSegment.getData().subList(0, itemsToMove));
+                        newSegment.setData(new ArrayList<>(newSegment.getData().subList(itemsToMove, newSegment.getData().size())));
+                    }
+                }
+            }            
         }
 
+    }
+
+    public int itemInMem() {
+        return memoryStore.size();
     }
 
     @Override
