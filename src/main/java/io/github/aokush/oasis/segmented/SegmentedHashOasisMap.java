@@ -90,6 +90,11 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
     private List<String> persistedSegTracker = new ArrayList<>();
 
     /*
+     * A numerical id appended to sgement file name to create a unique file
+     */
+    private int numberId;
+
+    /*
      * Is the cache enabled
      */
     private boolean isCached;
@@ -560,7 +565,7 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
      * creates a unique name for the next segment to persisted on disk
      */
     private String getNextSegmentName() {
-        return storagePath + File.separator + "segment-" + (persistedSegTracker.size() + 1);
+        return storagePath + File.separator + "segment-" + numberId++;
     }
 
     /**
@@ -1113,6 +1118,30 @@ public class SegmentedHashOasisMap<K extends Serializable, V extends Serializabl
 
             persistedSegTracker.removeAll(segmentToDel);
             Utilities.deleteSegFiles(segmentToDel);
+
+             // new segmenyt may contain data that may need to be compacted as well
+             if (memoryStore.size() < this.itemsStoredInMemory && persistedSegTracker.isEmpty() && newSegment != null) {
+    
+                if (!newSegment.getData().isEmpty()) {
+                    int itemsToMove = this.itemsStoredInMemory - memoryStore.size();
+
+                    if (itemsToMove >= newSegment.getData().size()) {
+                        memoryStore.putAll(newSegment.getData());
+                        newSegment.getData().clear();
+                    } else {
+
+                        Iterator<Entry<K, V>> itr = newSegment.getData().entrySet().iterator();
+                        Entry<K, V> temp;
+
+                        for (int i = 0; itr.hasNext() && i < itemsToMove; i++) {
+                            temp = itr.next();
+                            memoryStore.put(temp.getKey(), temp.getValue());
+                            // remove from src
+                            itr.remove();
+                        }
+                    }
+                }
+            }
         }
 
     }
